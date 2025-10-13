@@ -8,7 +8,7 @@
 
 ## 概览
 
-![](./assets/s_2025-10-11_20-39-08.png)
+![](https://cdnstatic.tencentcs.com/edgeone/pages/assets/wrN7E-1760357336586.png)
 
 本项目演示如何通过腾讯云 EdgeOne Pages + Functions 托管 MCP 服务器。只需一个 `functions/mcp/index.ts` 文件，就可以向 ChatGPT 暴露工具，实时部署 HTML 内容并返回可访问的公网地址。
 

@@ -10,7 +10,7 @@ Live Demo: https://chatgpt-apps-edgeone-pages.edgeone.run
 
 ## Overview
 
-![](./assets/s_2025-10-11_20-39-08.png)
+![](https://cdnstatic.tencentcs.com/edgeone/pages/assets/wrN7E-1760357336586.png)
 
 The project demonstrates how to host an MCP server with Tencent Cloud EdgeOne Pages + Functions. With a single `functions/mcp/index.ts` file you can expose tools to ChatGPT, deploy HTML in real time, and return a publicly accessible URL.
 
