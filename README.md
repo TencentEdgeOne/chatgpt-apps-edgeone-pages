@@ -1,6 +1,6 @@
 # ChatGPT Apps SDK EdgeOne Pages Starter
 
-This repository is a minimal EdgeOne Pages project that shows how to build an MCP server compatible with the [OpenAI Apps SDK](https://developers.openai.com/apps-sdk) using edge functions, and deploy ChatGPT generated output directly to an EdgeOne static site.
+This repository is a minimal EdgeOne Pages project that shows how to build an MCP server compatible with the [OpenAI Apps SDK](https://developers.openai.com/apps-sdk) using Next.js and edge functions.
 
 ## Deploy
 
@@ -10,29 +10,42 @@ Live Demo: https://chatgpt-apps-edgeone-pages.edgeone.run
 
 ## Overview
 
-![](https://cdnstatic.tencentcs.com/edgeone/pages/assets/wrN7E-1760357336586.png)
+![](https://cdnstatic.tencentcs.com/edgeone/pages/assets/9DNtu-1760670100883.png)
 
-The project demonstrates how to host an MCP server with Tencent Cloud EdgeOne Pages + Functions. With a single `functions/mcp/index.ts` file you can expose tools to ChatGPT, deploy HTML in real time, and return a publicly accessible URL.
+The project demonstrates how to host an MCP server with Tencent Cloud EdgeOne Pages + Functions using Next.js. The MCP server exposes tools to ChatGPT and renders widgets with structured content.
+
+## Tech Stack
+
+- **Next.js 15**: React framework with App Router
+- **Hono**: Fast, lightweight web framework for EdgeOne Functions
+- **MCP SDK**: Model Context Protocol implementation
+- **Tailwind CSS**: Utility-first CSS framework
+- **TypeScript**: Type-safe development
 
 ## Capabilities
 
-- **MCP server**: A serverless `onRequest` handler built on EdgeOne Functions.
-- **One-click deploy**: The `deploy_html` tool receives HTML from ChatGPT, then calls the EdgeOne API to publish static assets.
-- **CORS support**: Built-in logic keeps the server compatible with ChatGPT iframes and browser debugging.
+- **MCP server**: A serverless `onRequest` handler built on EdgeOne Functions using Hono
+- **Widget support**: The `hello_stat` tool renders dynamic widgets with structured content
+- **CORS support**: Built-in logic keeps the server compatible with ChatGPT iframes and browser debugging
+- **Next.js frontend**: Modern React-based UI with Tailwind CSS styling
 
 ## Key files
 
-- `functions/mcp/index.ts`: Implements MCP JSON-RPC, registers the `deploy_html` tool, and handles requests such as `initialize` and `tools/list`.
-- `index.html`: Example landing page that explains the project after a successful deployment.
+- `functions/mcp/index.ts`: Implements MCP JSON-RPC, registers the `hello_stat` tool, and handles widget rendering
+- `functions/httpTransport.ts`: Custom HTTP transport for MCP server
+- `app/page.tsx`: Next.js landing page that explains the project
+- `app/layout.tsx`: Root layout with global styles
+- `app/globals.css`: Tailwind CSS configuration and global styles
+- `edgeone.json`: EdgeOne Pages configuration with CORS headers
 
 ## Quick start
 
 ### 1. Deploy to EdgeOne Pages
 
 1. Click the button above for one-click deployment.
-2. After provisioning, the EdgeOne console assigns a domain that hosts both the static page and the MCP endpoint.
+2. After provisioning, the EdgeOne console assigns a domain that hosts both the Next.js app and the MCP endpoint.
 
-Once deployment finishes, `index.html` is served from the root path and `functions/mcp/index.ts` is automatically mapped to `/mcp`.
+Once deployment finishes, the Next.js app is served from the root path and `functions/mcp/index.ts` is automatically mapped to `/mcp`.
 
 ## Connect from ChatGPT
 
@@ -42,24 +55,31 @@ Once deployment finishes, `index.html` is served from the root path and `functio
    ```
    https://<your-project-url>/mcp
    ```
-4. Save the configuration, then call the `deploy_html` tool in a conversation to publish content. ChatGPT returns the static page URL hosted on EdgeOne.
+4. Save the configuration, then call the `hello_stat` tool in a conversation to render a stat widget with your name.
 
 ## MCP request flow
 
 1. ChatGPT calls `/mcp` via the MCP protocol, triggering the `initialize` and `tools/list` handshake.
-2. When a user invokes `deploy_html`, the server pushes the HTML payload to the EdgeOne deployment API.
-3. EdgeOne produces a public link and returns it to ChatGPT, which surfaces the URL to the user.
+2. When a user invokes `hello_stat`, the server returns structured content with title/value/description.
+3. The widget template is fetched from the Next.js app root and rendered in ChatGPT with the structured data.
 4. Errors are returned in a structured format so ChatGPT and developers can debug quickly.
 
 ## Project structure
 
 ```
 examples/chatgpt-apps-edgeone-pages/
+├── app/
+│   ├── layout.tsx        # Next.js root layout
+│   ├── page.tsx          # Landing page
+│   └── globals.css       # Global styles with Tailwind
 ├── functions/
-│   └── mcp/
-│       └── index.ts      # MCP function running on EdgeOne
-├── index.html            # Static information page
-└── README_zh-CN.md       # Chinese documentation
+│   ├── mcp/
+│   │   ├── index.ts      # MCP server with hello_stat tool
+│   │   └── [[default]].ts # Dynamic route handler
+│   └── httpTransport.ts  # Custom HTTP transport for MCP
+├── edgeone.json          # EdgeOne configuration
+├── next.config.js        # Next.js configuration
+└── tailwind.config.js    # Tailwind CSS configuration
 ```
 
 ## Further reading
